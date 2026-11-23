@@ -3,8 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23ffc766'/%3E%3Cstop offset='1' stop-color='%23ff8a00'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='40' height='40' rx='11.500' fill='url(%23g)'/%3E%3Cg transform='scale(.625)'%3E%3Cpath d='M10 24h44M10 30h44M10 36h44M10 42h44M10 48h44' stroke='white' stroke-opacity='.55' stroke-width='1.8' stroke-linecap='round' fill='none'/%3E%3Cpath d='M24.2 40V22M38.2 34V16' stroke='white' stroke-width='2.2' fill='none'/%3E%3Cpath d='M23.2 21.2L39.2 15.2V19L23.2 25Z' fill='white'/%3E%3Cellipse cx='20' cy='41' rx='4.8' ry='3.5' transform='rotate(-22 20 41)' fill='white'/%3E%3Cellipse cx='34' cy='35' rx='4.8' ry='3.5' transform='rotate(-22 34 35)' fill='white'/%3E%3Cpath d='M47 14V52' stroke='white' stroke-width='3' stroke-linecap='round' fill='none'/%3E%3C/g%3E%3C/svg%3E">
-<title>Notenfluss</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23ffcb73'/%3E%3Cstop offset='1' stop-color='%23ff8600'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='18' fill='url(%23g)'/%3E%3Cg fill='white'%3E%3Crect x='15' y='14' width='34' height='7' rx='3.5'/%3E%3Crect x='29.5' y='14' width='5.5' height='34' rx='2.75'/%3E%3Cellipse cx='26' cy='47' rx='8' ry='5.8' transform='rotate(-22 26 47)'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="icon.png">
+<meta name="theme-color" content="#ff8600">
+<meta name="description" content="Tactune: Noten-Player mit automatischem Scrollen, Metronom und Takterkennung.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Tactune">
+<meta property="og:description" content="Noten, die mitlaufen. Automatisches Scrollen, Metronom und Takterkennung.">
+<meta property="og:image" content="https://tactune.github.io/icon.png">
+<meta name="twitter:card" content="summary">
+<title>Tactune</title>
 <style>
 :root{--bg:#e8e6e1;--surface:#ffffff;--soft:#f3f1ec;--text:#17181b;--muted:#6c6f78;--accent:#f08c00;--ink:#1b1200;--line:#dcd9d0;--shadow:0 10px 40px rgba(20,20,30,.16);
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -297,13 +305,15 @@ body.lib #wrap,body.lib .dock{display:none}
 .lopt svg{color:var(--muted)}
 .lopt b{font-size:15px;font-weight:700}
 .lopt small{color:var(--muted);font-size:12px;line-height:1.35;white-space:normal;font-weight:400}
+img.logo{border-radius:24%;object-fit:cover;display:block}
 </style>
 </head>
 <body>
 <header class="top">
   <div class="brand">
-    <svg class="logo" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="lgA" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffcb73"/><stop offset="1" stop-color="#ff8600"/></linearGradient><linearGradient id="lgB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".85"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></linearGradient></defs><rect width="64" height="64" rx="18" fill="url(#lgA)"/><rect x=".6" y=".6" width="62.8" height="62.8" rx="17.4" fill="none" stroke="url(#lgB)" stroke-width="1.2"/><path d="M4.5 24C4.5 12 12 5 32 5s27.5 7 27.5 19C46 16.5 18 16.5 4.5 24Z" fill="#fff" fill-opacity=".18" stroke="none"/><path d="M10 24h44M10 30h44M10 36h44M10 42h44M10 48h44" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="1.6" stroke-linecap="round"/><path d="M24.2 40V22M38.2 34V16" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M23.2 21.2L39.2 15.2V19L23.2 25Z" fill="#fff" stroke="none"/><ellipse cx="20" cy="41" rx="4.8" ry="3.5" transform="rotate(-22 20 41)" fill="#fff" stroke="none"/><ellipse cx="34" cy="35" rx="4.8" ry="3.5" transform="rotate(-22 34 35)" fill="#fff" stroke="none"/><path d="M47 14V52" fill="none" stroke="#fff" stroke-opacity=".28" stroke-width="7" stroke-linecap="round"/><path d="M47 14V52" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/></svg>
-    <div class="wm"><b>Noten</b><span>fluss</span></div>
+    <img class="logo" id="logoImg" alt="Tactune" width="42" height="42" style="display:none">
+    <svg class="logo" id="logoSvg" viewBox="0 0 64 64" aria-hidden="true" style="display:none"><defs><linearGradient id="lgA" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffcb73"/><stop offset="1" stop-color="#ff8600"/></linearGradient><linearGradient id="lgB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".85"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></linearGradient></defs><rect width="64" height="64" rx="18" fill="url(#lgA)"/><rect x=".6" y=".6" width="62.8" height="62.8" rx="17.4" fill="none" stroke="url(#lgB)" stroke-width="1.2"/><path d="M4.5 24C4.5 12 12 5 32 5s27.5 7 27.5 19C46 16.5 18 16.5 4.5 24Z" fill="#fff" fill-opacity=".18" stroke="none"/><path d="M9 22h46M9 29h46M9 36h46M9 43h46M9 50h46" fill="none" stroke="#fff" stroke-opacity=".22" stroke-width="1.5" stroke-linecap="round"/><g fill="#b85a00" fill-opacity=".28" stroke="none" transform="translate(0 1.6)"><rect x="15" y="14" width="34" height="7" rx="3.5"/><rect x="29.5" y="14" width="5.5" height="34" rx="2.75"/><ellipse cx="26" cy="47" rx="8" ry="5.8" transform="rotate(-22 26 47)"/></g><g fill="#fff" stroke="none"><rect x="15" y="14" width="34" height="7" rx="3.5"/><rect x="29.5" y="14" width="5.5" height="34" rx="2.75"/><ellipse cx="26" cy="47" rx="8" ry="5.8" transform="rotate(-22 26 47)"/></g></svg>
+    <div class="wm"><b>Tac</b><span>tune</span></div>
   </div>
   <div id="fname"></div><div class="sp"></div>
   <button id="open">PDF öffnen</button>
@@ -447,9 +457,9 @@ body.lib #wrap,body.lib .dock{display:none}
 <h3>1. Verantwortlicher</h3>
 <p><span class="ph">[Vor- und Nachname]</span>, <span class="ph">[Straße und Hausnummer]</span>, <span class="ph">[PLZ Ort]</span>, E-Mail: <span class="ph">[E-Mail-Adresse]</span> (siehe auch Impressum).</p>
 <h3>2. Überblick</h3>
-<p>Notenfluss ist ein Noten-Player im Browser. Deine PDF-Dateien werden ausschließlich lokal in deinem Browser verarbeitet und nicht auf einen Server hochgeladen. Ein Konto ist optional und nur für die Funktion „Meine Songs“ nötig. Es werden keine Werbe-, Tracking- oder Analysedienste eingesetzt.</p>
+<p>Tactune ist ein Noten-Player im Browser. Deine PDF-Dateien werden ausschließlich lokal in deinem Browser verarbeitet und nicht auf einen Server hochgeladen. Ein Konto ist optional und nur für die Funktion „Meine Songs“ nötig. Es werden keine Werbe-, Tracking- oder Analysedienste eingesetzt.</p>
 <h3>3. Hosting und Server-Logfiles</h3>
-<p>Beim Aufruf der Seite verarbeitet der Hosting-Anbieter (<span class="ph">[Hosting-Anbieter eintragen, z. B. GitHub Pages oder Firebase Hosting]</span>) technisch notwendige Daten wie IP-Adresse, Datum und Uhrzeit, aufgerufene Seite und Browserinformationen in Server-Logfiles. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (sicherer und stabiler Betrieb der Seite).</p>
+<p>Beim Aufruf der Seite verarbeitet der Hosting-Anbieter (GitHub Pages (GitHub Inc., USA) <span class="ph">[anpassen, falls du anders hostest]</span>) technisch notwendige Daten wie IP-Adresse, Datum und Uhrzeit, aufgerufene Seite und Browserinformationen in Server-Logfiles. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (sicherer und stabiler Betrieb der Seite).</p>
 <h3>4. Externe Bibliotheken (cdnjs / Cloudflare)</h3>
 <p>Zur Darstellung von PDFs (pdf.js) und für die Anmeldung (Firebase SDK) werden Skripte vom Content-Delivery-Network cdnjs.cloudflare.com (Cloudflare, Inc., USA) geladen. Dabei wird deine IP-Adresse an Cloudflare übermittelt. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (zuverlässige und schnelle Bereitstellung). Eine Übermittlung in die USA stützt sich auf das EU-US Data Privacy Framework (sofern der Anbieter zertifiziert ist) oder auf Standardvertragsklauseln.</p>
 <h3>5. Konto (Firebase Authentication)</h3>
@@ -487,7 +497,7 @@ body.lib #wrap,body.lib .dock{display:none}
 <h2>Nutzungsbedingungen</h2>
 <p class="muted">Stand: 22.11.2026 · Version 2026-11-22</p>
 <h3>1. Leistung</h3>
-<p>Notenfluss ist ein kostenloser Noten-Player im Browser mit automatischem Scrollen, Metronom und optionalem Konto. Ein Anspruch auf bestimmte Funktionen oder dauerhafte Verfügbarkeit besteht nicht.</p>
+<p>Tactune ist ein kostenloser Noten-Player im Browser mit automatischem Scrollen, Metronom und optionalem Konto. Ein Anspruch auf bestimmte Funktionen oder dauerhafte Verfügbarkeit besteht nicht.</p>
 <h3>2. Konto</h3>
 <p>Du musst mindestens 16 Jahre alt sein oder die Zustimmung deiner Erziehungsberechtigten haben. Deine Angaben müssen wahr sein, deine Zugangsdaten hältst du geheim. Du bist für Aktivitäten in deinem Konto verantwortlich.</p>
 <h3>3. Deine Inhalte und Urheberrecht</h3>
@@ -1153,6 +1163,7 @@ function initFb() {
   try {
     if (!firebase.apps.length) firebase.initializeApp(cfg);
     fbAuth = firebase.auth(); fbAuth.languageCode = 'de';
+    try { firebase.firestore().enablePersistence({ synchronizeTabs: true }).catch(() => {}); } catch (e) {}
     fbAuth.onAuthStateChanged(u => { fbUser = u; renderAcc(); });
     return true;
   } catch (e) { return false; }
@@ -1176,7 +1187,7 @@ const FB_ERR = {
 const fbMsg = e => FB_ERR[e && e.code] || (e && e.message) || 'Unbekannter Fehler.';
 const showErr = m => { $('accErr').textContent = m || ''; };
 function renderAcc() {
-  libAuth(); consentAuth();
+  libAuth(); consentAuth(); savePending();
   const ready = !!fbAuth;
   $('accSetup').hidden = ready; $('accFormEl').hidden = !ready || !!fbUser; $('accUser').hidden = !fbUser;
   $('accCfgReset').hidden = !(fbCfg() && !FIREBASE_CONFIG.apiKey);
@@ -1254,21 +1265,38 @@ async function pdfId(bytes) {
   try { const h = await crypto.subtle.digest('SHA-256', bytes); return Array.from(new Uint8Array(h)).slice(0, 16).map(b => b.toString(16).padStart(2, '0')).join(''); }
   catch (e) { return 'n' + bytes.byteLength + '_' + curName.replace(/\W/g, '').slice(0, 20); }
 }
-async function saveSong(first) {
+var savePromise = null, playedOut = false;
+async function saveSong(first, force) {
   const col = songsCol();
-  if (!col || !curBytes || !systems.length) return;
+  if (!col || !curBytes || !systems.length) { if (first && !col) playedOut = true; return; }
   if (first) { if (songCounted) return; songCounted = true; }
-  else if (Date.now() - lastSave < 4000) return;
+  else if (!force && Date.now() - lastSave < 1500) return;
   lastSave = Date.now();
-  try {
-    if (!curSongId) curSongId = await pdfId(curBytes);
-    const FV = firebase.firestore.FieldValue;
-    const data = { name: curName, pages: pages.length, lines: systems.length, bars: systems.reduce((a, s) => a + s.measures, 0), bpm: S.bpm, bpb: S.bpb, measures: systems.map(s => s.measures), staves: S.staves, startSys, startMeasure, lastPlayed: FV.serverTimestamp() };
-    if (first) { data.plays = FV.increment(1); const th = makeThumb(); if (th) data.thumb = th; }
-    await col.doc(curSongId).set(data, { merge: true });
-    if (first) idbPut(fbUser.uid + '_' + curSongId, curBytes).catch(() => {});
-  } catch (e) { if (first) songCounted = false; }
+  const run = (async () => {
+    let lastErr = null;
+    for (let attempt = 0; attempt < 3; attempt++) {
+      try {
+        if (!curSongId) curSongId = await pdfId(curBytes);
+        const FV = firebase.firestore.FieldValue;
+        const data = { name: curName, pages: pages.length, lines: systems.length, bars: systems.reduce((a, s) => a + s.measures, 0), bpm: S.bpm, bpb: S.bpb, measures: systems.map(s => s.measures), staves: S.staves, startSys, startMeasure, lastPlayed: FV.serverTimestamp() };
+        if (first) { data.plays = FV.increment(1); const th = makeThumb(); if (th) data.thumb = th; }
+        await col.doc(curSongId).set(data, { merge: true });
+        if (first) { idbPut(fbUser.uid + '_' + curSongId, curBytes).catch(() => {}); toast('Zu „Meine Songs“ hinzugefügt.'); }
+        return true;
+      } catch (e) { lastErr = e; await new Promise(r => setTimeout(r, 700 * (attempt + 1))); }
+    }
+    if (first) songCounted = false;
+    toast('Song konnte nicht gespeichert werden: ' + songErr(lastErr));
+    return false;
+  })();
+  savePromise = run;
+  return run;
 }
+function savePending() {
+  if (fbUser && playedOut && !songCounted && curBytes && systems.length) { playedOut = false; saveSong(true); }
+}
+addEventListener('pagehide', () => { if (songCounted) saveSong(false, true); });
+document.addEventListener('visibilitychange', () => { if (document.hidden && songCounted) saveSong(false, true); });
 async function restoreSong() {
   const col = songsCol();
   if (!col || !curBytes) return;
@@ -1321,7 +1349,7 @@ async function loadSongsOld() {
   } catch (e) { L.innerHTML = ''; const m = document.createElement('div'); m.className = 'empty err'; m.textContent = songErr(e); L.appendChild(m); }
 }
 async function openSong(id, name, here, staves) {
-  pendingStaves = staves || null;
+  pendingStaves = staves || null; setTimeout(() => { pendingStaves = null; }, 120000);
   closeSongs();
   if (here) {
     try { const bytes = await idbGet(fbUser.uid + '_' + id); if (bytes) { loadFile(new File([bytes], (name || 'Song') + '.pdf', { type: 'application/pdf' })); return; } } catch (e) {}
@@ -1372,14 +1400,20 @@ function libAuth() {
   const u = fbUser ? fbUser.uid : null;
   if (u !== libUid) { libUid = u; libItems = []; if (u) loadLib(); else renderLib(); }
 }
-async function loadLib() {
+var libCursor = null, libMore = false;
+async function loadLib(more) {
   const col = songsCol(); if (!col) return;
-  libUid = fbUser.uid; libState = 'loading'; renderLib();
+  if (!more) { libUid = fbUser.uid; libState = 'loading'; libItems = []; libCursor = null; libMore = false; renderLib(); }
   try {
-    const [snap, keys] = await Promise.all([col.orderBy('lastPlayed', 'desc').limit(60).get(), idbKeys()]);
-    libItems = []; snap.forEach(d => libItems.push(Object.assign({ id: d.id, here: keys.has(fbUser.uid + '_' + d.id) }, d.data())));
+    if (savePromise) { try { await savePromise; } catch (e) {} }
+    let q = col.orderBy('lastPlayed', 'desc').limit(24);
+    if (more && libCursor) q = q.startAfter(libCursor);
+    const [snap, keys] = await Promise.all([q.get(), idbKeys()]);
+    snap.forEach(d => libItems.push(Object.assign({ id: d.id, here: keys.has(fbUser.uid + '_' + d.id) }, d.data())));
+    if (snap.docs.length) libCursor = snap.docs[snap.docs.length - 1];
+    libMore = snap.docs.length === 24;
     libState = 'ok';
-  } catch (e) { libState = 'err'; libErr = songErr(e); }
+  } catch (e) { if (more) toast(songErr(e)); else { libState = 'err'; libErr = songErr(e); } }
   renderLib();
 }
 function libMsg(text, btn, fn) {
@@ -1396,12 +1430,13 @@ function renderLib() {
   const list = libItems.filter(s => (s.name || '').toLowerCase().includes(libQuery));
   const tm = s => s.lastPlayed && s.lastPlayed.toMillis ? s.lastPlayed.toMillis() : Date.now();
   list.sort((a, b) => (b.fav ? 1 : 0) - (a.fav ? 1 : 0) || (libSort === 'name' ? (a.name || '').localeCompare(b.name || '', 'de') : libSort === 'plays' ? (b.plays || 0) - (a.plays || 0) : tm(b) - tm(a)));
-  sub.textContent = libItems.length + (libItems.length === 1 ? ' Song' : ' Songs') + ' in deinem Account';
+  sub.textContent = libItems.length + (libMore ? '+' : '') + (libItems.length === 1 && !libMore ? ' Song' : ' Songs') + ' in deinem Account';
   const add = mkEl('div', 'sc add'); add.innerHTML = '<span class="plus">+</span><b>PDF hinzufügen</b><small>Neuen Song öffnen</small>';
   add.onclick = () => $('file').click(); G.appendChild(add);
   if (!libItems.length) G.appendChild(libMsg('Noch keine Songs. Sobald du ein Stück abspielst, erscheint es hier.'));
   else if (!list.length) G.appendChild(libMsg('Kein Song gefunden.'));
   list.forEach(s => G.appendChild(songCard(s)));
+  if (libMore) { const mm = mkEl('div', 'libmsg'); const bb = mkEl('button', 'op'); bb.textContent = 'Mehr laden'; bb.onclick = () => { bb.disabled = true; loadLib(true); }; mm.append(bb); G.appendChild(mm); }
 }
 function songCard(s) {
   const c = mkEl('div', 'sc'), pv = mkEl('div', 'pv');
@@ -1477,7 +1512,7 @@ $('accExport').onclick = async () => {
     if (c) out.zustimmung = { version: c.version, zeitpunkt: c.acceptedAt && c.acceptedAt.toDate ? c.acceptedAt.toDate().toISOString() : null };
     const a = document.createElement('a');
     a.href = URL.createObjectURL(new Blob([JSON.stringify(out, null, 2)], { type: 'application/json' }));
-    a.download = 'notenfluss-daten.json'; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 3000);
+    a.download = 'tactune-daten.json'; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 3000);
   } catch (e) { toast(songErr(e)); }
 };
 let delArmed = false;
@@ -1493,6 +1528,21 @@ $('accDelete').onclick = async () => {
     await u.delete(); closeAcc(); toast('Dein Konto und alle Daten wurden gelöscht.');
   } catch (e) { toast(e && e.code === 'auth/requires-recent-login' ? 'Bitte melde dich zur Sicherheit erneut an und versuche das Löschen noch einmal.' : fbMsg(e)); }
 };
+/* ===== Eigenes Icon: icon.png (oder .svg/.jpg/.webp/.ico) im selben Ordner wie index.html ===== */
+(function () {
+  const names = ['icon.png', 'icon.svg', 'icon.jpg', 'icon.jpeg', 'icon.webp', 'icon.ico'];
+  const img = $('logoImg'), svg = $('logoSvg');
+  const test = n => new Promise(r => { const t = new Image(); t.onload = () => r(true); t.onerror = () => r(false); t.src = n; });
+  Promise.all(names.map(test)).then(res => {
+    const i = res.indexOf(true);
+    if (i < 0) { svg.style.display = ''; return; }
+    const url = names[i];
+    img.src = url; img.style.display = '';
+    const fav = document.querySelector('link[rel="icon"]'); if (fav) { fav.removeAttribute('type'); fav.href = url; }
+    const at = document.querySelector('link[rel="apple-touch-icon"]'); if (at) at.href = url;
+  });
+})();
+
 /* ===== Notenaufbau: eine Zeile oder linke & rechte Hand ===== */
 var pendingStaves = null;
 function askLayout() {
