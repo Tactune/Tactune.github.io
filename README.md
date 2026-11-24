@@ -3,88 +3,89 @@
 
 # TACTUNE
 
-### A smarter way to practice music.
+### THE SMARTER WAY TO PRACTICE MUSIC.
 
-**Your sheet music. Your tempo. Your focus.**
+**Practice without interruptions.**
 
-A modern, browser-based sheet music player that automatically navigates through your scores, allowing you to focus entirely on playing.
+A modern sheet music player that intelligently navigates through your scores, synchronizes scrolling with your selected tempo and makes every practice session more focused.
 
-[**Website**](https://tactune.github.io)
+[Website](https://tactune.github.io)
 
 </div>
 
-## Overview
+## About
 
-Tactune transforms the way musicians practice with digital sheet music.
+**Tactune** rethinks how musicians interact with digital sheet music.
 
-Upload your PDF scores, choose your preferred tempo, and let Tactune automatically navigate through your music. With intelligent score recognition and integrated practice tools, you can practice without constantly interacting with your screen.
+Instead of manually scrolling through pages while playing, Tactune automatically guides you through your sheet music. Upload your scores, select your tempo and focus on what matters most: the music.
 
-## Features
+Designed to make digital music practice more intuitive, efficient and enjoyable.
 
-### Sheet Music & Navigation
+## Core Features
 
-- **PDF Import** — Upload your own sheet music directly into Tactune.
-- **Intelligent Score Recognition** — Automatically detects musical staves and measures.
-- **Automatic Scrolling** — Navigates through your score based on its musical structure.
-- **Measure Selection** — Start practicing from a specific measure.
-- **Zoom Control** — Adjust the sheet music display to your needs.
+### 01. Intelligent Sheet Music
 
-### Tempo & Practice
+- **PDF Upload** — Import your own digital sheet music.
+- **Automatic Recognition** — Detects musical staves and measures.
+- **Smart Scrolling** — Automatically navigates through the score based on its musical structure.
+- **Measure Navigation** — Jump directly to a specific measure.
+- **Adjustable Zoom** — Customize the sheet music display.
 
-- **Adjustable BPM** — Set your preferred practice tempo.
-- **Tap Tempo** — Determine the tempo by tapping.
-- **Integrated Metronome** — Practice with an adjustable metronome.
-- **Count-In** — Prepare yourself before starting a practice session.
-- **Loop Mode** — Repeat selected sections of your sheet music.
-- **Tempo Trainer** — Gradually increase the tempo during repeated practice.
+### 02. Advanced Practice Tools
 
-### Music Library
+- **Tempo Control** — Set your preferred BPM.
+- **Tap Tempo** — Determine the tempo through tapping.
+- **Metronome** — Practice with an integrated metronome.
+- **Count-In** — Get ready before each practice session.
+- **Section Looping** — Repeat selected musical passages.
+- **Progressive Tempo Training** — Gradually increase the tempo during repeated practice.
 
-- **My Songs** — Keep your sheet music organized.
-- **Save Songs** — Store songs for future practice sessions.
-- **Search & Sort** — Find and organize your music easily.
+### 03. Your Music Library
 
-### Interface & Customization
+- **My Songs** — Keep your sheet music in one place.
+- **Save & Organize** — Manage your music collection.
+- **Search & Sort** — Quickly find your songs.
 
-- **Dark Mode** — A darker interface for comfortable practice.
-- **Light Mode** — A clean, bright appearance.
-- **Stage Mode** — A distraction-free interface for playing.
-- **Customizable Display** — Adjust the visual experience to your preferences.
+### 04. Designed for Musicians
+
+- **Dark Mode** — A comfortable dark interface.
+- **Light Mode** — A clean and bright appearance.
+- **Stage Mode** — Minimize distractions while playing.
+- **Display Customization** — Adapt the interface to your preferences.
 
 ## How It Works
 
-**01 — Upload**
+<div align="center">
 
-Import your sheet music as a PDF.
+| STEP | ACTION | RESULT |
+|:---:|---|---|
+| 01 | Upload | Import your PDF sheet music |
+| 02 | Recognize | Detect staves and measures |
+| 03 | Configure | Select tempo and starting position |
+| 04 | Practice | Follow your automatically scrolling score |
 
-**02 — Recognition**
+</div>
 
-Tactune detects the musical staves and measures.
-
-**03 — Configure**
-
-Choose your starting measure, tempo and metronome settings.
-
-**04 — Practice**
-
-Start playing while Tactune automatically navigates through your sheet music.
-
-## Privacy
+## Privacy & Data
 
 Tactune processes uploaded sheet music locally in your browser. Optional account functionality provides additional features for managing your music library.
 
-## Project Vision
+## Our Vision
 
-Tactune was created with one simple idea: musicians should be able to focus on playing instead of constantly interacting with their devices.
+We believe technology should make music practice easier, not more complicated.
 
-By combining intelligent score recognition, automatic navigation and practical training tools, Tactune aims to make digital sheet music a more natural part of everyday music practice.
+Tactune brings together intelligent sheet music navigation and practical training tools to create a more seamless digital practice experience.
+
+**Less screen interaction. More music.**
+
+---
 
 <div align="center">
 
-### TACTUNE
+# TACTUNE
 
-**Focus on the music. Not the scrolling.**
+### FOCUS ON THE MUSIC.
 
-[Website](https://tactune.github.io)
+[**tactune.github.io**](https://tactune.github.io)
 
 </div>
