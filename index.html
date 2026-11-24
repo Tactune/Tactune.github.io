@@ -3,10 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png?v=2">
-<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png?v=2">
-<link rel="shortcut icon" href="favicon.ico?v=2">
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <meta name="theme-color" content="#ff8600">
 <meta name="description" content="Tactune: Noten-Player mit automatischem Scrollen, Metronom und Takterkennung.">
 <meta property="og:type" content="website">
@@ -317,6 +316,10 @@ a.brand:active{opacity:.75}
 .srcbtn:hover{background:var(--glass2)}
 .srcbtn:active{transform:scale(.97)}
 .srcbtn svg{width:20px;height:20px;flex:none;fill:currentColor;stroke:none}
+button{-webkit-backdrop-filter:none;backdrop-filter:none}
+.bdg{-webkit-backdrop-filter:none;backdrop-filter:none}
+#veil{-webkit-backdrop-filter:none;backdrop-filter:none}
+body.dopen #veil{-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
 </style>
 </head>
 <body>
@@ -575,6 +578,8 @@ try { pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/aja
 function toast(m) { const t = $('toast'); t.textContent = m; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 4200); }
 
 /* ================= Erkennung ================= */
+var pdfChain = Promise.resolve();
+function pdfTask(fn) { const r = pdfChain.then(fn); pdfChain = r.catch(() => {}); return r; }
 async function analyze(P) {
   const b = P.proxy.getViewport({ scale: 1 });
   const v = P.proxy.getViewport({ scale: 1500 / b.width });
@@ -582,18 +587,25 @@ async function analyze(P) {
   c.width = Math.round(v.width); c.height = Math.round(v.height);
   const ctx = c.getContext('2d', { willReadFrequently: true });
   ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, c.width, c.height);
-  await P.proxy.render({ canvasContext: ctx, viewport: v }).promise;
-  const im = ctx.getImageData(0, 0, c.width, c.height).data, d = new Uint8Array(c.width * c.height);
+  await pdfTask(() => P.proxy.render({ canvasContext: ctx, viewport: v }).promise);
+  await new Promise(r => setTimeout(r));
+  const W = c.width, H = c.height;
+  const im = ctx.getImageData(0, 0, W, H).data, d = new Uint8Array(W * H);
   for (let i = 0, j = 0; j < d.length; i += 4, j++) d[j] = (im[i] * .3 + im[i + 1] * .59 + im[i + 2] * .11) < 195 ? 1 : 0;
-  P.dark = { w: c.width, h: c.height, d };
+  c.width = c.height = 0;
+  P.dark = { w: W, h: H, d };
 }
 
 const mk = ls => ({ ls, top: ls[0], bot: ls[ls.length - 1], n: ls.length });
 
 function detect(D, sens, grp) {
-  const { w, h, d } = D, row = new Float32Array(h);
-  let mx = 0;
-  for (let y = 0; y < h; y++) { let c = 0; const o = y * w; for (let x = 0; x < w; x++) c += d[o + x]; row[y] = c / w; if (row[y] > mx) mx = row[y]; }
+  const { w, h, d } = D;
+  if (!D.row) {
+    const rr = new Float32Array(h); let m0 = 0;
+    for (let y = 0; y < h; y++) { let c = 0; const o = y * w; for (let x = 0; x < w; x++) c += d[o + x]; rr[y] = c / w; if (rr[y] > m0) m0 = rr[y]; }
+    D.row = rr; D.mx = m0;
+  }
+  const row = D.row, mx = D.mx;
   if (mx < .25) return [];
   const th = mx * (1 - sens), L = [];
   for (let y = 0; y < h;) { if (row[y] >= th) { const a = y; while (y < h && row[y] >= th) y++; L.push((a + y - 1) / 2); } else y++; }
@@ -626,10 +638,11 @@ function detect(D, sens, grp) {
     const a0 = Math.max(0, Math.round(yt - s * .9)), a1 = Math.max(0, Math.round(yt - s * .4));
     const b0 = Math.min(h - 1, Math.round(yb + s * .4)), b1 = Math.min(h - 1, Math.round(yb + s * .9));
     const frac = (x, ya, yb2) => { let n = 0; for (let y = ya; y <= yb2; y++) n += d[y * w + x]; return yb2 >= ya ? n / (yb2 - ya + 1) : 0; };
+    const cnt = new Uint16Array(xr - xl + 1);
+    for (let y = yt; y <= yb; y++) { const o = y * w + xl; for (let i = 0; i < cnt.length; i++) cnt[i] += d[o + i]; }
     const groups = []; let g = null;
     for (let x = xl; x <= xr; x++) {
-      let n = 0; for (let y = yt; y <= yb; y++) n += d[y * w + x];
-      if (n >= H * .9 && frac(x, a0, a1) < .5 && frac(x, b0, b1) < .5) { if (g && x - g.e <= s * 1.2) g.e = x; else { if (g) groups.push(g); g = { a: x, e: x }; } }
+      if (cnt[x - xl] >= H * .9 && frac(x, a0, a1) < .5 && frac(x, b0, b1) < .5) { if (g && x - g.e <= s * 1.2) g.e = x; else { if (g) groups.push(g); g = { a: x, e: x }; } }
     }
     if (g) groups.push(g);
     groups.forEach(q2 => { const c = (q2.a + q2.e) / 2; if (!out.length || c - out[out.length - 1] >= s * 5) out.push(c); });
@@ -670,8 +683,10 @@ function buildSystems() {
 /* ================= Layout ================= */
 function bxOf(s) {
   const n = s.measures; if (s.auto && n === s.det) return s.bx;
+  if (s._cn === n && s._cb === s.bx) return s._c;
   const a = s.bx[0], z = s.bx[s.bx.length - 1], r = [];
   for (let k = 0; k <= n; k++) r.push(a + (z - a) * k / n);
+  s._cn = n; s._cb = s.bx; s._c = r;
   return r;
 }
 function xAt(s, mf) {
@@ -742,7 +757,7 @@ function apply(follow, dur) {
     curI = i;
     systems.forEach((q, k) => { q.el.classList.toggle('active', k === i); q.el.classList.toggle('past', playing && k < i); });
   }
-  ph.style.display = 'block'; ph.style.top = s.top + 'px'; ph.style.height = s.h + 'px';
+  if (ph._i !== i || ph._t !== s.top || ph._h !== s.h) { ph._i = i; ph._t = s.top; ph._h = s.h; ph.style.display = 'block'; ph.style.top = s.top + 'px'; ph.style.height = s.h + 'px'; }
   ph.style.transform = 'translateX(' + (xAt(s, p * s.measures) * curW) + 'px)';
   if (follow) {
     camFollow(i, dur);
@@ -824,25 +839,39 @@ function startFrom(i, m) {
 }
 
 /* ================= PDF laden & rendern ================= */
+var io1 = null, io2 = null;
 async function render() {
   const tok = ++rtok;
   curW = Math.min(innerWidth - 20, 1100) * S.zoom / 100;
   sheet.style.width = curW + 'px';
+  if (io1) { io1.disconnect(); io2.disconnect(); }
   sheet.querySelectorAll('canvas').forEach(c => c.remove());
-  const dpr = Math.min(devicePixelRatio || 1, 2);
   for (const P of pages) {
     const b = P.proxy.getViewport({ scale: 1 }), cv = document.createElement('canvas');
     cv.style.width = curW + 'px'; cv.style.height = (curW * b.height / b.width) + 'px';
-    sheet.insertBefore(cv, mark); P.canvas = cv; P.base = b.width;
+    sheet.insertBefore(cv, mark); P.canvas = cv; P.base = b.width; P.state = 'empty'; cv._P = P;
   }
   layout();
-  for (const P of pages) {
-    if (tok !== rtok) return;
-    const v = P.proxy.getViewport({ scale: curW / P.base * dpr });
-    P.canvas.width = v.width; P.canvas.height = v.height;
-    await P.proxy.render({ canvasContext: P.canvas.getContext('2d'), viewport: v }).promise;
-  }
+  io1 = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) drawPage(e.target._P, tok); }), { rootMargin: '150% 0px 150% 0px' });
+  io2 = new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting && !document.body.classList.contains('lib')) freePage(e.target._P); }), { rootMargin: '500% 0px 500% 0px' });
+  pages.forEach(P => { io1.observe(P.canvas); io2.observe(P.canvas); });
 }
+function drawPage(P, tok) {
+  if (!P || P.state !== 'empty') return;
+  P.state = 'queued';
+  pdfTask(async () => {
+    if (tok !== rtok || !P.canvas || P.state !== 'queued') return;
+    const cv = P.canvas, cssW = curW, cssH = parseFloat(cv.style.height) || 1;
+    let sc = Math.min(window.devicePixelRatio || 1, 2);
+    if (cssW * cssH * sc * sc > 6e6) sc = Math.sqrt(6e6 / (cssW * cssH));
+    const v = P.proxy.getViewport({ scale: curW / P.base * sc });
+    cv.width = Math.round(v.width); cv.height = Math.round(v.height);
+    P.state = 'drawing';
+    try { await P.proxy.render({ canvasContext: cv.getContext('2d'), viewport: v }).promise; P.state = tok === rtok ? 'ready' : 'empty'; }
+    catch (e) { P.state = 'empty'; }
+  });
+}
+function freePage(P) { if (P && P.canvas && P.state === 'ready') { P.state = 'empty'; P.canvas.width = P.canvas.height = 0; } }
 async function loadFile(f) {
   if (!f || busy) return;
   busy = true; stop(); leaveLib();
@@ -956,7 +985,7 @@ let camIdx = -1, camY = 0, slide = null, idleOn = false, uiT = 0, wasManual = fa
 const easeIO = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 /* ===== Präzises Timing: Audio-Uhr als Master, Klicks werden sample-genau vorausgeplant ===== */
 let curDy = 0, anim = null, camDirty = true, timer = null, segs = [], sched = [], nextTick = 0;
-const LOOK = .12;
+const LOOK = .25;
 const clk = () => audio ? audio.currentTime : performance.now() / 1000;
 const lat = () => audio ? (audio.outputLatency || 0) : 0;
 function beatAt(t) {
@@ -980,7 +1009,7 @@ function retempo(v) {
 function schedule() {
   if (!playing || !audio || !segs.length) return;
   const now = clk(), horizon = now + LOOK;
-  sched = sched.filter(x => x.t > now - .3);
+  if (sched.length > 24) sched = sched.filter(x => x.t > now - .3);
   for (let guard = 0; guard < 400; guard++) {
     let tail = segs[segs.length - 1], bt = nextTick / S.sub;
     if (S.loop) {
@@ -1014,7 +1043,7 @@ async function play(pre) {
   systems.forEach((q, k) => q.el.classList.toggle('past', k < curI));
   anchorNow();
   if (!songCounted) saveSong(true);
-  clearInterval(timer); timer = setInterval(schedule, 25);
+  clearInterval(timer); timer = setInterval(schedule, 40);
   try { navigator.wakeLock.request('screen').then(l => { lock = l; }).catch(() => {}); } catch (e) {}
   raf = requestAnimationFrame(frame);
 }
@@ -1292,7 +1321,7 @@ async function saveSong(first, force) {
         if (!curSongId) curSongId = await pdfId(curBytes);
         const FV = firebase.firestore.FieldValue;
         const data = { name: curName, pages: pages.length, lines: systems.length, bars: systems.reduce((a, s) => a + s.measures, 0), bpm: S.bpm, bpb: S.bpb, measures: systems.map(s => s.measures), staves: S.staves, startSys, startMeasure, lastPlayed: FV.serverTimestamp() };
-        if (first) { data.plays = FV.increment(1); const th = makeThumb(); if (th) data.thumb = th; }
+        if (first) { data.plays = FV.increment(1); const th = await makeThumb(); if (th) data.thumb = th; }
         await col.doc(curSongId).set(data, { merge: true });
         if (first) { idbPut(fbUser.uid + '_' + curSongId, curBytes).catch(() => {}); toast('Zu „Meine Songs“ hinzugefügt.'); }
         return true;
@@ -1379,12 +1408,14 @@ function closeSongsOld() { $('songbox').hidden = true; }
 var libItems = [], libSort = 'recent', libQuery = '', savedY = 0, libUid, libState = 'idle', libErr = '';
 const mkEl = (t, c) => { const e = document.createElement(t); if (c) e.className = c; return e; };
 const NOTE_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V6l11-2v12"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg>';
-function makeThumb() {
+async function makeThumb() {
   try {
-    const c = pages[0] && pages[0].canvas; if (!c || !c.width) return null;
-    const w = 320, h = Math.round(c.height * w / c.width), t = document.createElement('canvas');
-    t.width = w; t.height = h; const x = t.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, w, h); x.drawImage(c, 0, 0, w, h);
-    return t.toDataURL('image/jpeg', .62);
+    const P = pages[0]; if (!P) return null;
+    const b = P.proxy.getViewport({ scale: 1 }), v = P.proxy.getViewport({ scale: 320 / b.width });
+    const c = document.createElement('canvas'); c.width = Math.round(v.width); c.height = Math.round(v.height);
+    const x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height);
+    await pdfTask(() => P.proxy.render({ canvasContext: x, viewport: v }).promise);
+    return c.toDataURL('image/jpeg', .62);
   } catch (e) { return null; }
 }
 function fmtDay(d) {
@@ -1453,7 +1484,7 @@ function renderLib() {
 }
 function songCard(s) {
   const c = mkEl('div', 'sc'), pv = mkEl('div', 'pv');
-  if (s.thumb) { const im = new Image(); im.src = s.thumb; im.alt = ''; pv.appendChild(im); } else pv.innerHTML = NOTE_SVG;
+  if (s.thumb) { const im = new Image(); im.loading = 'lazy'; im.decoding = 'async'; im.src = s.thumb; im.alt = ''; pv.appendChild(im); } else pv.innerHTML = NOTE_SVG;
   const star = mkEl('button', 'star ico'); star.textContent = s.fav ? '★' : '☆'; star.classList.toggle('on', !!s.fav); star.setAttribute('aria-label', 'Favorit');
   star.onclick = async e => { e.stopPropagation(); s.fav = !s.fav; renderLib(); try { await songsCol().doc(s.id).set({ fav: s.fav }, { merge: true }); } catch (err) { toast(songErr(err)); } };
   const tag = mkEl('span', 'tag' + (s.here ? ' ok' : '')); tag.textContent = s.here ? 'Auf diesem Gerät' : 'Datei wählen';
@@ -1551,6 +1582,7 @@ async function goHome() {
   curBytes = null; curSongId = null; songCounted = false; playedOut = false;
   camIdx = -1; startSys = 0; startMeasure = 0; beatPos = 0; resumable = false; curI = -1;
   sheet.querySelectorAll('canvas,.sys').forEach(e => e.remove());
+  if (io1) { io1.disconnect(); io2.disconnect(); }
   ph.style.display = 'none'; mark.style.display = 'none';
   if (anim) { anim.cancel(); anim = null; } curDy = 0; sheet.style.transform = '';
   document.body.classList.remove('loaded', 'playing');
